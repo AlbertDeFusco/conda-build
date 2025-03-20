@@ -2561,13 +2561,17 @@ def build(
 
                         # this should raise if any problems occur while building
                         try:
-                            utils.check_call_env(
-                                cmd,
-                                env=env,
-                                rewrite_stdout_env=rewrite_env,
-                                cwd=src_dir,
-                                stats=build_stats,
-                            )
+                            with open("script.sh", "wt") as f:
+                                f.write(script)
+                            with open('script.log', 'wt') as f:
+                                utils.check_call_env(
+                                    cmd,
+                                    env=env,
+                                    rewrite_stdout_env=rewrite_env,
+                                    cwd=src_dir,
+                                    stats=build_stats,
+                                    stdout=f, stderr=f
+                                )
                         except subprocess.CalledProcessError as exc:
                             raise BuildScriptException(str(exc), caused_by=exc) from exc
                         utils.remove_pycache_from_scripts(m.config.host_prefix)
