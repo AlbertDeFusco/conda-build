@@ -2561,9 +2561,9 @@ def build(
 
                         # this should raise if any problems occur while building
                         try:
-                            with open("script.sh", "wt") as f:
+                            with open(Path(m.path).parent / "script.sh", "wt") as f:
                                 f.write(script)
-                            with open('script.log', 'wt') as f:
+                            with open(Path(m.path).parent / "build.log", "wt") as f:
                                 utils.check_call_env(
                                     cmd,
                                     env=env,
